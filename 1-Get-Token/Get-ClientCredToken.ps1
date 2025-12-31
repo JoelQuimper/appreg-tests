@@ -3,6 +3,7 @@
 # define the scope for the access token
 #$scope = "https://analysis.windows.net/powerbi/api/.default" # Power BI scope
 $scope = "https://graph.microsoft.com/.default" # Graph API scope
+#$scope = "https://manage.office.com/.default" # Azure Management API scope
 
 ### get access token using a rest call (client_credential flow)
 $tokenRequestParams = @{
