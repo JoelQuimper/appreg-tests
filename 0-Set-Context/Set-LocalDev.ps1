@@ -23,6 +23,7 @@ $clientId = "your-client-id"
 $clientSecret = "your-client-secret"
 $graphBaseUrl = "https://graph.microsoft.com/v1.0"
 $powerBiBaseUrl = "https://api.powerbi.com/v1.0/myorg"
+$powerAutomateBaseUrl = "https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple/environments"
 
 # Importation des modules Microsoft Graph
 $graphVersion = "2.25.0"
