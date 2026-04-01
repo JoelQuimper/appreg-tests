@@ -1,18 +1,18 @@
+### before running this, make sure to :
+#    1- Set the context by running 0-Set-Context/Set-LocalDev.ps1 and filling in the required variables
+#    2- Get an access token by running either 1-Get-Token/Get-DeviceCodeToken.ps1 or 1-Get-Token/Get-ClientCredToken.ps1
+
 # create subscription to SharePoint audit logs
-# require an access token with Manage Office scope
-# Set-LocalDev.ps1 must be used to set the required variables: $tenantId, $clientId, $clientSecret
-# Token must be acquire first using an option in 1-Get-Token folder.  The variable $accessToken must contain the token.
 # see https://learn.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference
 
-### Define base URI, webhook URL and AuthId
-$baseUri = "https://manage.office.com/api/v1.0/$tenantId/activity/feed/subscriptions"
+### Define webhook URL and AuthId
 $webHookUrl = "<your-webhook-url>"
 $authId = "<the-authid-used-to-validate-your-webhook>"
-
+    
 ### Create subscription for SharePoint Audit logs
 $subscriptionRequestParams = @{
     Method = 'POST'
-    Uri    = "$baseUri/start?contentType=Audit.SharePoint&PublisherIdentifier=$tenantId"
+    Uri    = "$baseUrl/start?contentType=Audit.SharePoint&PublisherIdentifier=$tenantId"
     Headers = @{
         Authorization = "Bearer $accessToken"
         "Content-Type"  = "application/json"
@@ -30,7 +30,7 @@ $response
 ### List existing subscriptions
 $listSubscriptionsParams = @{
     Method = 'GET'
-    Uri    = "$baseUri/list?PublisherIdentifier=$tenantId"
+    Uri    = "$baseUrl/list?PublisherIdentifier=$tenantId"
     Headers = @{
         Authorization = "Bearer $accessToken"
         "Content-Type"  = "application/json"
@@ -42,7 +42,7 @@ $response
 ### Remove a subscription
 $removeSubscriptionParams = @{
     Method = 'POST'
-    Uri    = "$baseUri/stop?contentType=Audit.SharePoint&PublisherIdentifier=$tenantId"
+    Uri    = "$baseUrl/stop?contentType=Audit.SharePoint&PublisherIdentifier=$tenantId"
     Headers = @{
         Authorization = "Bearer $accessToken"
         "Content-Type"  = "application/json"

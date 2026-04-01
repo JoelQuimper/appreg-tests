@@ -1,51 +1,45 @@
 <#
 .SYNOPSIS
-    Importation intentionnelle des modules PowerShell et configuration de l'environnement.
+    Intentional importation of PowerShell modules and environment configuration.
 
 .DESCRIPTION
-    Ce script est utilisé uniquement lorsque on est en mode développement.
+    This script is used only when in development mode.
 
-    Comme les modules peuvent varier selon les déploiements et les environnements, 
-    je préfère les importer et charger de manière manuelle, similaire à l'utilisation 
-    des packages NuGet en C#. Cela permet de s'assurer que les modules nécessaires sont 
-    explicitement déclarés et importés, réduisant ainsi les risques de conflits ou de 
-    dépendances manquantes.
+    Since modules can vary depending on deployments and environments, 
+    I prefer to import and load them manually, similar to using 
+    NuGet packages in C#. This ensures that necessary modules are 
+    explicitly declared and imported, thus reducing the risk of conflicts or 
+    missing dependencies.
 
-    ** Les modules doivent être sauvergardé localement au préalable en utilisant Save-Module.
+    ** Modules must be saved locally beforehand using Save-Module.
 
 .NOTES
-    Auteur: Joël Quimper
-    Date: 2025-06-17
+    Author: Joël Quimper
+    Date: 2026-04-01
 #>
-# definition des variables pour le graph
+## Definition of variables for the app registration to use
 $tenantId = "your-tenant-id"
 $clientId = "your-client-id"
 $clientSecret = "your-client-secret"
-$graphBaseUrl = "https://graph.microsoft.com/v1.0"
-$powerBiBaseUrl = "https://api.powerbi.com/v1.0/myorg"
-$powerAutomateBaseUrl = "https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple/environments"
 
-# Importation des modules Microsoft Graph
-$graphVersion = "2.25.0"
-$graphPowerShellModulePath = "C:\src\PowerShellModules\Microsoft.Graph\$graphVersion"
-$graphAuthenticationPowerShellModule = "$graphPowerShellModulePath\Microsoft.Graph.Authentication\$graphVersion\Microsoft.Graph.Authentication.psd1"
-$graphPowerShellModule = "$graphPowerShellModulePath\Microsoft.Graph\$graphVersion\Microsoft.Graph.psd1"
+## Information about the target APIs
+# Graph API
+$baseUrl = "https://graph.microsoft.com/v1.0"
+$scope = "https://graph.microsoft.com/.default"
 
-$allGraphModules = Get-ChildItem -Path $graphPowerShellModulePath -Recurse -Filter *.psd1
-$totalModulesCount = $allGraphModules.Count
-Write-Output "Importaing Microsoft.Graph, there are $totalModulesCount modules to import."
+# Power BI API
+$baseUrl = "https://api.powerbi.com/v1.0/myorg"
+$scope = "https://analysis.windows.net/powerbi/api/.default"
 
-# Ce module doit être chargé en premier pour éviter les erreurs de dépendances.
-Write-Output "Importing module (1 / $totalModulesCount): $graphAuthenticationPowerShellModule"
-Import-Module $graphAuthenticationPowerShellModule
+# Power Automate API
+$baseUrl = "https://api.flow.microsoft.com/providers/Microsoft.ProcessSimple/environments"
+$scope = "https://service.flow.microsoft.com/.default"
 
-$filteredGraphModules = $allGraphModules | Where-Object { $_.FullName -notlike "*Microsoft.Graph.Authentication.psd1*" } | Where-Object { $_.FullName -notlike "*Microsoft.Graph.psd1*" }
-for ($i = 0; $i -lt $filteredGraphModules.Count; $i++) {
-    $module = $filteredGraphModules[$i]
-    Write-Output "Importing module ($($i+2) / $totalModulesCount): $($module.FullName)"
-    Import-Module $module.FullName
-}
+# M365 Audit API
+$baseUrl = "https://manage.office.com/api/v1.0/$tenantId/activity/feed/subscriptions"
+$scope = "https://manage.office.com/.default"
 
-# Ce module doit être chargé en dernier.
-Write-Output "Importing module ($totalModulesCount / $totalModulesCount): $graphPowerShellModule"
-Import-Module $graphPowerShellModule
+# For SQL Database
+$baseUrl = "not set as I was using the SQL Powershell Module"
+$scope = "https://database.windows.net/.default"
+

@@ -1,9 +1,4 @@
-## set variables (use Set-LocalDev.ps1 to set these variables)
-
-# define the scope for the access token
-#$scope = "https://analysis.windows.net/powerbi/api/.default" # Power BI scope
-$scope = "https://graph.microsoft.com/.default" # Graph API scope
-#$scope = "https://manage.office.com/.default" # Azure Management API scope
+## set variables and context (use Set-LocalDev.ps1 to set these variables)
 
 ### get access token using a rest call (client_credential flow)
 $tokenRequestParams = @{

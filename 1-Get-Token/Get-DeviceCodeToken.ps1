@@ -1,12 +1,5 @@
-## set variables (use Set-LocalDev.ps1 to set these variables) 
+## set variables and context (use Set-LocalDev.ps1 to set these variables) 
 ## app registration must be configure for public client
-
-# define the scope for the access token
-$scope = "https://service.flow.microsoft.com/.default" # PowerAutomate scope
-#$scope = "https://analysis.windows.net/powerbi/api/.default" # Power BI scope
-#$scope = "https://graph.microsoft.com/.default" # Graph API scope
-#$scope = "https://database.windows.net/.default" # Azure SQL Database scope
-
 
 ### prepare body for device_code flow with microsoft identity
 $deviceCodeAuthParams = @{
